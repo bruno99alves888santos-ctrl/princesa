@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#070611">
+<meta name="description" content="Um universo inteiro para Lorrayne, minha Princesa.">
+<title>Nosso Universo ✨</title>
+<style>
+:root{color-scheme:dark;--pink:#ff9bd8;--violet:#b8a1ff;--blue:#8fdcff}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#05040d;color:#fff;font-family:Georgia,"Times New Roman",serif;overscroll-behavior:none}
+body{position:fixed;inset:0}
+#space{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none;outline:none}
+#fallback{position:absolute;inset:0;display:none;background:radial-gradient(ellipse at 50% 45%,#48245d 0,#18122f 35%,#05040d 75%);overflow:hidden}
+#fallback:before{content:"";position:absolute;inset:-30%;background:repeating-radial-gradient(ellipse at center,transparent 0 35px,#d78aff16 37px 39px,transparent 42px 66px);animation:turn 70s linear infinite}
+@keyframes turn{to{transform:rotate(360deg)}}
+#intro{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px 26px;background:radial-gradient(ellipse at 50% 45%,#29153f80,transparent 48%),linear-gradient(180deg,#06050e99,#080512cc);transition:opacity 1.2s ease,transform 1.4s cubic-bezier(.2,.8,.2,1);z-index:5}
+#intro.leaving{opacity:0;transform:scale(1.16);pointer-events:none}
+.eyebrow{font:500 10px/1.5 system-ui,sans-serif;letter-spacing:.36em;text-transform:uppercase;color:#d6b9ff;margin-bottom:24px}
+h1{font-weight:400;font-size:clamp(32px,8vw,58px);line-height:1.13;letter-spacing:-.035em;max-width:640px;margin:0 0 18px;text-shadow:0 0 35px #d56fff55}
+h1 em{font-weight:400;color:#ffc0e7}
+.sub{font:300 13px/1.8 system-ui,sans-serif;letter-spacing:.05em;color:#d5cde8;margin:0 0 34px}
+.primary{border:1px solid #f6c3ed99;color:#fff;background:linear-gradient(115deg,#9d4edc44,#ef70bd38);border-radius:999px;padding:16px 25px;font:500 12px system-ui,sans-serif;letter-spacing:.06em;box-shadow:0 0 35px #b55dff28,inset 0 0 20px #ffffff08;cursor:pointer;min-height:52px;transition:transform .25s,box-shadow .25s}
+.primary:active{transform:scale(.97);box-shadow:0 0 50px #df8cff55}
+.intro-star{position:absolute;width:2px;height:2px;border-radius:50%;background:#fff;box-shadow:0 0 12px 3px #e2c4ff;animation:twinkle 3s ease-in-out infinite alternate}
+@keyframes twinkle{to{opacity:.25;transform:scale(.5)}}
+#hud{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity 1.2s;z-index:2}
+#hud.visible{opacity:1}
+.topline{position:absolute;top:calc(env(safe-area-inset-top) + 17px);left:20px;right:20px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.brand{font:10px system-ui,sans-serif;letter-spacing:.25em;text-transform:uppercase;color:#e3d6f6;text-shadow:0 0 15px #bd8aff}
+.controls{display:flex;gap:8px;pointer-events:auto}
+.ghost{width:40px;height:40px;border:1px solid #ffffff2e;border-radius:50%;background:#0e0a1b88;color:#f8eaff;backdrop-filter:blur(10px);font-size:16px;display:grid;place-items:center;cursor:pointer}
+.headline{position:absolute;top:calc(env(safe-area-inset-top) + 66px);left:18px;right:18px;text-align:center;font-size:clamp(17px,4.5vw,23px);font-weight:400;color:#ffe3f4;text-shadow:0 0 22px #f18adf70;pointer-events:none}
+.hint{position:absolute;bottom:calc(env(safe-area-inset-bottom) + 19px);left:0;right:0;text-align:center;color:#d0c4e5a8;font:10px/1.7 system-ui,sans-serif;letter-spacing:.09em;pointer-events:none}
+#message{position:absolute;z-index:4;left:50%;top:50%;transform:translate(-50%,-46%) scale(.96);width:min(82vw,340px);padding:24px 22px 20px;text-align:center;border:1px solid #f4c7ff4a;border-radius:20px;background:linear-gradient(145deg,#21152fe8,#0a0918ef);box-shadow:0 0 70px #bd61e940,inset 0 0 35px #e5b5ff0a;backdrop-filter:blur(18px);opacity:0;pointer-events:none;transition:opacity .45s,transform .45s}
+#message.show{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:auto}
+#message .small{font:9px system-ui,sans-serif;letter-spacing:.3em;text-transform:uppercase;color:#cdb4f6;margin-bottom:14px}
+#message p{font-size:clamp(19px,5vw,24px);line-height:1.45;font-weight:400;margin:0 0 20px;color:#fff2fb}
+#closeMsg{background:none;border:1px solid #ffffff38;border-radius:999px;color:#d9c9ee;padding:9px 17px;font:10px system-ui,sans-serif;letter-spacing:.1em}
+#toast{position:absolute;bottom:calc(env(safe-area-inset-bottom) + 62px);left:50%;transform:translateX(-50%);font:10px system-ui,sans-serif;color:#eadcf7;background:#100b20aa;border:1px solid #ffffff22;padding:10px 14px;border-radius:999px;white-space:nowrap;opacity:0;transition:opacity .4s;pointer-events:none}
+#toast.show{opacity:1}
+#musicPanel{position:absolute;z-index:5;left:50%;bottom:calc(env(safe-area-inset-bottom) + 48px);transform:translate(-50%,18px);width:min(88vw,360px);padding:10px;border:1px solid #e7c4ff55;border-radius:16px;background:#100b20ed;box-shadow:0 0 45px #bd61e933;backdrop-filter:blur(18px);opacity:0;pointer-events:none;transition:opacity .35s,transform .35s}
+#musicPanel.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+#musicPanel .panelTitle{font:10px system-ui,sans-serif;letter-spacing:.14em;color:#f3dffb;margin:3px 5px 9px}
+#musicPanel iframe{display:block;width:100%;height:152px;border:0;border-radius:12px}
+#loading{position:absolute;inset:0;z-index:6;display:flex;align-items:center;justify-content:center;background:#070611;color:#d9c5f4;font:11px system-ui,sans-serif;letter-spacing:.2em;transition:opacity .8s;pointer-events:none}
+#loading.off{opacity:0}
+@media(prefers-reduced-motion:reduce){*,*:before{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<canvas id="space" aria-label="Galáxia interativa de amor"></canvas><div id="fallback"></div>
+<div id="loading">PREPARANDO NOSSO UNIVERSO ✦</div>
+<section id="intro" aria-label="Introdução romântica">
+  <span class="eyebrow">um lugar só nosso</span>
+  <h1>Preparei um universo inteiro para vc, <em>minha princesa.</em></h1>
+  <p class="sub">Para Lorrayne, com todo o amor que existe em mim.</p>
+  <button class="primary" id="enter">Abrir nosso universo ✨</button>
+</section>
+<div id="hud">
+  <div class="topline"><div class="brand">LORRAYNE · MEU INFINITO</div><div class="controls"><button class="ghost" id="music" aria-label="Ativar música" title="Ativar música">♫</button><button class="ghost" id="home" aria-label="Voltar ao início" title="Voltar ao início">⌂</button></div></div>
+  <div class="headline">Em qualquer universo, <em>eu escolheria vc.</em></div>
+  <div class="hint">ARRASTE PARA EXPLORAR · TOQUE NAS ESTRELAS ✧</div>
+</div>
+<div id="message" role="dialog" aria-modal="true" aria-label="Mensagem de amor"><div class="small">uma mensagem do meu coração</div><p id="messageText"></p><button id="closeMsg">CONTINUAR EXPLORANDO</button></div>
+<div id="toast">Toque nas estrelas que brilham diferente ✦</div>
+<!-- Player oficial incorporado: a música toca dentro do player, após ação da pessoa. -->
+<div id="musicPanel" aria-label="Player de Into It do Chase Atlantic"><div class="panelTitle">♫ NOSSA TRILHA · INTO IT</div><iframe title="Into It — Chase Atlantic no Spotify" src="https://open.spotify.com/embed/track/4t9QLXcFN8g2oWNnLm1bx6?utm_source=generator&theme=0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></div>
+<audio id="audio" loop preload="none"></audio>
+<script>
+(()=> {
+'use strict';
+const canvas=document.getElementById('space'), loading=document.getElementById('loading'), intro=document.getElementById('intro'), hud=document.getElementById('hud'), fallback=document.getElementById('fallback');
+const messages=[
+'Lorrayne, minha princesa, vc é meu lugar favorito no universo. ♥',
+'Entre bilhões de estrelas, meu coração escolheu vc.',
+'Se eu pudesse escolher meu universo de novo, escolheria vc.',
+'Meu lugar favorito não é um lugar. É ao seu lado.',
+'Mesmo em meio ao infinito, eu encontraria vc.',
+'Vc faz meu mundo inteiro ter sentido.',
+'Nosso amor é o meu universo favorito.',
+'Eu escolheria vc em todas as vidas.',
+'Minha princesa, vc é a estrela que ilumina meus dias.',
+'Não importa o tamanho do universo, quero explorá-lo com vc.'
+];
+let THREE=null, renderer=null, scene=null, camera=null, galaxy=null, starMeshes=[], special=[], raf=0, started=false, entered=false, last=0, frameCount=0, fpsStart=0, lowPerf=false;
+let targetX=0,targetY=0,dragging=false,moved=0,startX=0,startY=0,prevX=0,prevY=0,pointerId=null,selectedMessage=0,toastTimer=0;
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const rand=(a,b)=>a+Math.random()*(b-a);
+function introStars(){for(let i=0;i<42;i++){let s=document.createElement('i');s.className='intro-star';s.style.left=rand(3,97)+'%';s.style.top=rand(4,96)+'%';s.style.opacity=rand(.2,.9);s.style.animationDelay=rand(0,4)+'s';intro.appendChild(s)}}
+introStars();
+function showToast(t){const el=document.getElementById('toast');el.textContent=t;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2600)}
+function reveal(i){selectedMessage=i%messages.length;document.getElementById('messageText').textContent=messages[selectedMessage];document.getElementById('message').classList.add('show')}
+function closeMessage(){document.getElementById('message').classList.remove('show')}
+document.getElementById('closeMsg').addEventListener('click',closeMessage);
+document.getElementById('enter').addEventListener('click',async()=>{
+ if(entered)return;entered=true;intro.classList.add('leaving');hud.classList.add('visible');
+ if(!started){await init3D();started=true;animate();}
+ setTimeout(()=>{intro.style.display='none';loading.classList.add('off');showToast('Toque nas estrelas especiais para encontrar mensagens ✦');},500);
+});
+document.getElementById('home').addEventListener('click',()=>{closeMessage();hud.classList.remove('visible');intro.style.display='flex';requestAnimationFrame(()=>intro.classList.remove('leaving'));entered=false;});
+document.getElementById('music').addEventListener('click',()=>{
+ const panel=document.getElementById('musicPanel');
+ const open=panel.classList.toggle('show');
+ document.getElementById('music').textContent=open?'×':'♫';
+ if(open)showToast('Toque em ▶ no player para ouvir Into It 🎵');
+});
+async function init3D(){
+ try{
+   const mod=await import('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js'); THREE=mod;
+   const dpr=Math.min(window.devicePixelRatio||1,1.65);
+   renderer=new THREE.WebGLRenderer({canvas,alpha:false,antialias:!lowPerf,powerPreference:'high-performance',stencil:false,depth:true});
+   renderer.setPixelRatio(dpr);renderer.setSize(innerWidth,innerHeight,false);renderer.setClearColor(0x05040d,1);
+   renderer.outputColorSpace=THREE.SRGBColorSpace;
+   scene=new THREE.Scene();scene.fog=new THREE.FogExp2(0x05040d,.012);
+   camera=new THREE.PerspectiveCamera(48,innerWidth/innerHeight,.1,180);camera.position.set(0,0,29);
+   galaxy=new THREE.Group();scene.add(galaxy);
+   makeGalaxy();makeNebula();makeHeart();makeOrbit();
+   resize();
+ }catch(err){console.warn('Three.js indisponível; usando modo visual alternativo.',err);fallback.style.display='block';canvas.style.display='none';}
+}
+function makeGalaxy(){
+ const mobile=innerWidth<700, count=lowPerf?(mobile?2600:4500):(mobile?4300:7800), arms=5, positions=[], colors=[], sizes=[];
+ const c1=new THREE.Color('#ff8bd4'),c2=new THREE.Color('#9c79ff'),c3=new THREE.Color('#8adfff'),c4=new THREE.Color('#fff4ff');
+ for(let i=0;i<count;i++){
+   const radius=Math.pow(Math.random(),.62)*12.4, arm=Math.floor(Math.random()*arms), spin=radius*.62, angle=arm*Math.PI*2/arms+spin+rand(-.38,.38);
+   const spread=(1-radius/15)*.62+.07, x=Math.cos(angle)*radius+rand(-spread,spread), y=rand(-spread*.6,spread*.6), z=Math.sin(angle)*radius*.58+rand(-spread,spread);
+   positions.push(x,y,z);
+   let col=Math.random()<.54?c1.clone().lerp(c2,Math.random()*.7):c2.clone().lerp(c3,Math.random());
+   if(Math.random()<.12)col.lerp(c4,.65);
+   colors.push(col.r,col.g,col.b);sizes.push(rand(.45,1.7));
+ }
+ const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));geo.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));
+ const mat=new THREE.PointsMaterial({size:.075,vertexColors:true,transparent:true,opacity:.94,depthWrite:false,blending:THREE.AdditiveBlending,sizeAttenuation:true});
+ const points=new THREE.Points(geo,mat);galaxy.add(points);
+ // Fine dust in multiple depth layers
+ const dustN=mobile?1400:2400, dp=[],dc=[];
+ for(let i=0;i<dustN;i++){const r=rand(2,17),a=rand(0,Math.PI*2);dp.push(Math.cos(a)*r,rand(-5,5),Math.sin(a)*r);let c=new THREE.Color(Math.random()<.5?'#9bbdff':'#ffb8e8');dc.push(c.r,c.g,c.b)}
+ const dg=new THREE.BufferGeometry();dg.setAttribute('position',new THREE.Float32BufferAttribute(dp,3));dg.setAttribute('color',new THREE.Float32BufferAttribute(dc,3));
+ galaxy.add(new THREE.Points(dg,new THREE.PointsMaterial({size:.035,vertexColors:true,transparent:true,opacity:.56,depthWrite:false,blending:THREE.AdditiveBlending})));
+ // Core glow, layered translucent spheres
+ const core=new THREE.Group();galaxy.add(core);
+ [[2.25,'#8e53ff',.08],[1.55,'#e58bff',.13],[.8,'#fff0ff',.27]].forEach(([r,color,opacity])=>{
+  const m=new THREE.Mesh(new THREE.SphereGeometry(r,24,16),new THREE.MeshBasicMaterial({color,transparent:true,opacity,blending:THREE.AdditiveBlending,depthWrite:false}));core.add(m);
+ });
+ const glow=new THREE.Points(new THREE.BufferGeometry(),new THREE.PointsMaterial({color:'#ffd8ff',size:.8,transparent:true,opacity:.9,blending:THREE.AdditiveBlending}));
+ glow.geometry.setAttribute('position',new THREE.Float32BufferAttribute([0,0,0],3));core.add(glow);
+ // Special message stars positioned along arms, each individually clickable.
+ for(let i=0;i<messages.length;i++){
+   const a=i/ messages.length*Math.PI*2*1.7+0.4, r=4.1+(i%4)*1.65;
+   const obj=new THREE.Group();obj.position.set(Math.cos(a)*r,Math.sin(i*1.7)*1.3,Math.sin(a)*r*.62);obj.userData.message=i;galaxy.add(obj);
+   const star=new THREE.Mesh(new THREE.SphereGeometry(.105,10,8),new THREE.MeshBasicMaterial({color:i%3===0?'#fff3ff':i%3===1?'#ff9cde':'#a9cfff'}));
+   obj.add(star);
+   const halo=new THREE.Sprite(new THREE.SpriteMaterial({map:makeGlowTexture(),color:i%3===0?'#ffd7f5':i%3===1?'#caa0ff':'#9ee7ff',transparent:true,opacity:.85,blending:THREE.AdditiveBlending,depthWrite:false}));
+   halo.scale.set(.95,.95,1);obj.add(halo);starMeshes.push(obj);special.push(obj);
+ }
+}
+function makeGlowTexture(){
+ const c=document.createElement('canvas');c.width=c.height=64;const ctx=c.getContext('2d');const g=ctx.createRadialGradient(32,32,0,32,32,32);g.addColorStop(0,'rgba(255,255,255,1)');g.addColorStop(.12,'rgba(255,210,250,.8)');g.addColorStop(.38,'rgba(190,120,255,.22)');g.addColorStop(1,'rgba(140,100,255,0)');ctx.fillStyle=g;ctx.fillRect(0,0,64,64);return new THREE.CanvasTexture(c);
+}
+function makeNebula(){
+ const mobile=innerWidth<700, n=mobile?12:18, geo=new THREE.BufferGeometry(),pos=[],cols=[];
+ for(let i=0;i<n;i++){let x=rand(-10,10),y=rand(-3.5,3.5),z=rand(-5,5);pos.push(x,y,z);let col=new THREE.Color(['#e04fba','#7655ff','#448de9','#f2a5ee'][i%4]);cols.push(col.r,col.g,col.b)}
+ geo.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));geo.setAttribute('color',new THREE.Float32BufferAttribute(cols,3));
+ // Wide additive points create soft nebula-like clouds without expensive postprocessing.
+ galaxy.add(new THREE.Points(geo,new THREE.PointsMaterial({size:mobile?4.5:5.8,vertexColors:true,transparent:true,opacity:.105,depthWrite:false,blending:THREE.AdditiveBlending,sizeAttenuation:true})));
+}
+function makeHeart(){
+ const group=new THREE.Group();group.name='particleHeart';galaxy.add(group);
+ const p=[],c=[];const n=1300;const pink=new THREE.Color('#ff7ac8'),white=new THREE.Color('#fff1ff');
+ for(let i=0;i<n;i++){
+   const t=Math.random()*Math.PI*2, fill=Math.sqrt(Math.random());
+   const x=16*Math.pow(Math.sin(t),3), y=13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t);
+   p.push(x*.145*fill,y*.145*fill,rand(-.28,.28));let cc=pink.clone().lerp(white,Math.random()*.55);c.push(cc.r,cc.g,cc.b);
+ }
+ const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(p,3));g.setAttribute('color',new THREE.Float32BufferAttribute(c,3));
+ const pts=new THREE.Points(g,new THREE.PointsMaterial({size:.045,vertexColors:true,transparent:true,opacity:.9,depthWrite:false,blending:THREE.AdditiveBlending}));
+ group.add(pts);group.position.set(.2,-.25,1.3);group.rotation.z=-.12;group.scale.set(1.02,1.02,1);
+}
+function makeOrbit(){
+ for(let i=0;i<3;i++){
+   const curve=new THREE.EllipseCurve(0,0,8.6+i*.75,3.6+i*.45,0,Math.PI*2,false,0);
+   const pts=curve.getPoints(180).map(p=>new THREE.Vector3(p.x,p.y,0));
+   const geo=new THREE.BufferGeometry().setFromPoints(pts);
+   const line=new THREE.LineLoop(geo,new THREE.LineBasicMaterial({color:i===1?0xeab4ff:0x9dbaff,transparent:true,opacity:.14-i*.025,blending:THREE.AdditiveBlending}));
+   line.rotation.x=.35+i*.24;line.rotation.y=.22-i*.18;galaxy.add(line);
+ }
+}
+function resize(){if(!renderer||!camera)return;const w=innerWidth,h=innerHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.fov=w<500?53:48;camera.position.z=w<500?31:29;camera.updateProjectionMatrix()}
+window.addEventListener('resize',resize,{passive:true});
+window.addEventListener('orientationchange',()=>setTimeout(resize,180),{passive:true});
+function animate(now=0){
+ if(!entered||document.hidden){raf=0;return}
+ raf=requestAnimationFrame(animate);
+ if(!renderer||!scene||!camera){fallback.style.backgroundPosition=`${Math.sin(now*.0001)*30}px ${Math.cos(now*.0001)*30}px`;return}
+ const dt=Math.min(.045,(now-last)/1000||.016);last=now;
+ if(!reduced){galaxy.rotation.y+=dt*(dragging?0:.035);galaxy.rotation.x+=(targetY-galaxy.rotation.x)*.025;galaxy.rotation.y+=(targetX-galaxy.rotation.y)*.025;
+  galaxy.children.forEach((o,i)=>{if(o.name==='particleHeart')o.rotation.y=Math.sin(now*.00035)*.12;});
+  starMeshes.forEach((s,i)=>{s.scale.setScalar(.82+Math.sin(now*.002+i*1.9)*.17);});
+ }
+ renderer.render(scene,camera);
+ frameCount++;if(now-fpsStart>2400){const fps=frameCount*1000/(now-fpsStart);if(fps<35&&!lowPerf){lowPerf=true;renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.1));showToast('Modo leve ativado para manter a galáxia fluida');}frameCount=0;fpsStart=now}
+}
+document.addEventListener('visibilitychange',()=>{if(document.hidden){if(raf)cancelAnimationFrame(raf);raf=0;document.getElementById('audio').pause()}else if(entered&&!raf){last=0;animate()}});
+canvas.addEventListener('pointerdown',e=>{if(!entered||!renderer)return;dragging=true;moved=0;startX=prevX=e.clientX;startY=prevY=e.clientY;pointerId=e.pointerId;try{canvas.setPointerCapture(pointerId)}catch(_){}},{passive:true});
+canvas.addEventListener('pointermove',e=>{if(!dragging||e.pointerId!==pointerId)return;const dx=e.clientX-prevX,dy=e.clientY-prevY;moved+=Math.abs(dx)+Math.abs(dy);prevX=e.clientX;prevY=e.clientY;targetX+=dx*.004;targetY=Math.max(-.8,Math.min(.8,targetY+dy*.003));},{passive:true});
+canvas.addEventListener('pointerup',e=>{if(!dragging)return;dragging=false;if(moved<12&&renderer&&camera){const rect=canvas.getBoundingClientRect(),mouse=new THREE.Vector2(((e.clientX-rect.left)/rect.width)*2-1,-((e.clientY-rect.top)/rect.height)*2+1);const ray=new THREE.Raycaster();ray.setFromCamera(mouse,camera);const hits=ray.intersectObjects(special,true);if(hits.length){let obj=hits[0].object;while(obj&&!Number.isInteger(obj.userData.message))obj=obj.parent;if(obj)reveal(obj.userData.message)}else{const idx=Math.floor(Math.random()*messages.length);reveal(idx)}}},{passive:true});
+canvas.addEventListener('pointercancel',()=>{dragging=false},{passive:true});
+document.addEventListener('touchmove',e=>{if(e.target===canvas)e.preventDefault()},{passive:false});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMessage()});
+loading.classList.add('off');setTimeout(()=>{if(!entered)loading.style.display='none'},900);
+})();
+</script>
+</body>
+</html>
